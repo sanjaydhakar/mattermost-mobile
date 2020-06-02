@@ -16,6 +16,7 @@ import Button from 'react-native-button';
 import {goToScreen} from '@actions/navigation';
 import LocalConfig from '@assets/config';
 import gitlab from '@assets/images/gitlab.png';
+import google from '@assets/images/google.png';
 import logo from '@assets/images/logo.png';
 import FormattedText from '@components/formatted_text';
 import StatusBar from '@components/status_bar';
@@ -244,23 +245,31 @@ export default class LoginOptions extends PureComponent {
     };
 
     renderGoogleOption = () => {
-        return (
-            <Button
-                key='google'
-                onPress={preventDoubleTap(() => this.goToSSO(ViewTypes.GOOGLE))}
-                containerStyle={[GlobalStyles.signupButton, {backgroundColor: 'black'}]}
-            >
-                <Image
-                    source={gitlab}
-                    style={{height: 18, marginRight: 5, width: 18}}
-                />
-                <Text
-                    style={[GlobalStyles.signupButtonText, {color: 'white'}]}
+        const {config} = this.props;
+
+        const forceHideFromLocal = LocalConfig.HideGoogleLoginExperimental;
+
+        if (!forceHideFromLocal && config.EnableSignUpWithGoogle === 'true') {
+            return (
+                <Button
+                    key='google'
+                    onPress={preventDoubleTap(() => this.goToSSO(ViewTypes.GOOGLE))}
+                    containerStyle={[GlobalStyles.signupButton, {backgroundColor: '#4C8BF5'}]}
                 >
-                    {'Google'}
-                </Text>
-            </Button>
-        );
+                    <Image
+                        source={google}
+                        style={{height: 18, marginRight: 5, width: 18}}
+                    />
+                    <Text
+                        style={[GlobalStyles.signupButtonText, {color: 'white'}]}
+                    >
+                        {'Sign in with Google'}
+                    </Text>
+                </Button>
+            );
+        }
+
+        return null;
     };
 
     scrollRef = (ref) => {
