@@ -243,6 +243,26 @@ export default class LoginOptions extends PureComponent {
         return null;
     };
 
+    renderGoogleOption = () => {
+        return (
+            <Button
+                key='google'
+                onPress={preventDoubleTap(() => this.goToSSO(ViewTypes.GOOGLE))}
+                containerStyle={[GlobalStyles.signupButton, {backgroundColor: 'black'}]}
+            >
+                <Image
+                    source={gitlab}
+                    style={{height: 18, marginRight: 5, width: 18}}
+                />
+                <Text
+                    style={[GlobalStyles.signupButtonText, {color: 'white'}]}
+                >
+                    {'Google'}
+                </Text>
+            </Button>
+        );
+    };
+
     scrollRef = (ref) => {
         this.scroll = ref;
     };
@@ -271,6 +291,7 @@ export default class LoginOptions extends PureComponent {
                     id='mobile.login_options.choose_title'
                     defaultMessage='Choose your login method'
                 />
+                {this.renderGoogleOption()}
                 {this.renderEmailOption()}
                 {this.renderLdapOption()}
                 {this.renderGitlabOption()}
