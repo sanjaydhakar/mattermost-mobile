@@ -16,6 +16,7 @@ import Button from 'react-native-button';
 import {goToScreen} from '@actions/navigation';
 import LocalConfig from '@assets/config';
 import gitlab from '@assets/images/gitlab.png';
+import google from '@assets/images/google.png';
 import logo from '@assets/images/logo.png';
 import FormattedText from '@components/formatted_text';
 import StatusBar from '@components/status_bar';
@@ -243,6 +244,28 @@ export default class LoginOptions extends PureComponent {
         return null;
     };
 
+    renderGoogleOption = () => {
+        const {config} = this.props;
+
+        const forceHideFromLocal = LocalConfig.HideGoogleLoginExperimental;
+
+        if (!forceHideFromLocal && config.EnableSignUpWithGoogle === 'true') {
+            return (
+                <Button
+                    key='google'
+                    onPress={preventDoubleTap(() => this.goToSSO(ViewTypes.GOOGLE))}
+                >
+                    <Image
+                        source={google}
+                        style={{left: 0, width: 220, height: 53}}
+                    />
+                </Button>
+            );
+        }
+
+        return null;
+    };
+
     scrollRef = (ref) => {
         this.scroll = ref;
     };
@@ -263,14 +286,15 @@ export default class LoginOptions extends PureComponent {
                 </Text>
                 <FormattedText
                     style={GlobalStyles.subheader}
-                    id='web.root.signup_info'
-                    defaultMessage='All team communication in one place, searchable and accessible anywhere'
+                    id='web.root.custom_text'
+                    defaultMessage={this.props.config.CustomDescriptionText}
                 />
                 <FormattedText
                     style={[GlobalStyles.subheader, {fontWeight: 'bold', marginTop: 10}]}
                     id='mobile.login_options.choose_title'
-                    defaultMessage='Choose your login method'
+                    defaultMessage='This workspace requires you to Sign in with your Gsuite Email.'
                 />
+                {this.renderGoogleOption()}
                 {this.renderEmailOption()}
                 {this.renderLdapOption()}
                 {this.renderGitlabOption()}
