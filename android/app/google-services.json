@@ -1,101 +1,45 @@
 {
   "project_info": {
-    "project_number": "184930218130",
-    "firebase_url": "https://api-7231322553409637977-752355.firebaseio.com",
-    "project_id": "api-7231322553409637977-752355",
-    "storage_bucket": "api-7231322553409637977-752355.appspot.com"
+    "project_number": "439494579347",
+    "firebase_url": "https://flipchat-b5d0d.firebaseio.com",
+    "project_id": "flipchat-b5d0d",
+    "storage_bucket": "flipchat-b5d0d.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:184930218130:android:a0e553d1a1f043b5",
-        "android_client_info": {
-          "package_name": "com.mattermost.react.native"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "184930218130-8nahrspll1opff0uogtkh2qsv8coqngo.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCkZkU2ECVg-mmdCG5OoHHQXtKiENuvWPE"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 2
-        },
-        "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 2
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:184930218130:android:c7debfa7ea3f75a7",
+        "mobilesdk_app_id": "1:439494579347:android:b177369a23a8adef2e6966",
         "android_client_info": {
           "package_name": "com.mattermost.rnbeta"
         }
       },
       "oauth_client": [
         {
-          "client_id": "184930218130-8nahrspll1opff0uogtkh2qsv8coqngo.apps.googleusercontent.com",
+          "client_id": "439494579347-3a4k03h10753d3lb28f0majnvgda23gg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mattermost.rnbeta",
+            "certificate_hash": "ed626a6cfb9f626e460c6df562bdf0a3232da9b4"
+          }
+        },
+        {
+          "client_id": "439494579347-fbvc80k17f0ajflduusu2k3e70ga1cgm.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCkZkU2ECVg-mmdCG5OoHHQXtKiENuvWPE"
+          "current_key": "AIzaSyD7lPoO3pq3Hhay64nJ4sWMgJmcx_ZOsS4"
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 2
-        },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 2
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:184930218130:android:2db4058a5b5d6506",
-        "android_client_info": {
-          "package_name": "com.mattermost.rn"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "184930218130-8nahrspll1opff0uogtkh2qsv8coqngo.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCkZkU2ECVg-mmdCG5OoHHQXtKiENuvWPE"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 2
-        },
-        "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 2
+          "other_platform_oauth_client": [
+            {
+              "client_id": "439494579347-fbvc80k17f0ajflduusu2k3e70ga1cgm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
