@@ -14,6 +14,7 @@ import {
 import Button from 'react-native-button';
 
 import {goToScreen} from '@actions/navigation';
+import CookieManager from '@react-native-community/cookies';
 import LocalConfig from '@assets/config';
 import gitlab from '@assets/images/gitlab.png';
 import google from '@assets/images/google.png';
@@ -49,7 +50,7 @@ export default class LoginOptions extends PureComponent {
         const {intl} = this.context;
         const screen = 'Login';
         const title = intl.formatMessage({id: 'mobile.routes.login', defaultMessage: 'Login'});
-
+        CookieManager.clearAll(true);
         goToScreen(screen, title);
     });
 
@@ -57,7 +58,7 @@ export default class LoginOptions extends PureComponent {
         const {intl} = this.context;
         const screen = 'SSO';
         const title = intl.formatMessage({id: 'mobile.routes.sso', defaultMessage: 'Single Sign-On'});
-
+        CookieManager.clearAll(true);
         goToScreen(screen, title, {ssoType});
     };
 
