@@ -286,12 +286,12 @@ export default class LoginOptions extends PureComponent {
                 </Text>
                 <FormattedText
                     style={GlobalStyles.subheader}
-                    id='custom_description_text'
+                    id='web.root.custom_text'
                     defaultMessage={this.props.config.CustomDescriptionText}
                 />
                 <FormattedText
                     style={[GlobalStyles.subheader, {fontWeight: 'bold', marginTop: 10}]}
-                    id='login_message'
+                    id='mobile.login_options.choose_title'
                     defaultMessage='This workspace requires you to Sign in with your Gsuite Email.'
                 />
                 {this.renderGoogleOption()}
