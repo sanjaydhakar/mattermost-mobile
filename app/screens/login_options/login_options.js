@@ -254,17 +254,11 @@ export default class LoginOptions extends PureComponent {
                 <Button
                     key='google'
                     onPress={preventDoubleTap(() => this.goToSSO(ViewTypes.GOOGLE))}
-                    containerStyle={[GlobalStyles.signupButton, {backgroundColor: '#4C8BF5'}]}
                 >
                     <Image
                         source={google}
-                        style={{height: 18, marginRight: 5, width: 18}}
+                        style={{left: 0, width: 220, height: 53}}
                     />
-                    <Text
-                        style={[GlobalStyles.signupButtonText, {color: 'white'}]}
-                    >
-                        {'Sign in with Google'}
-                    </Text>
                 </Button>
             );
         }
@@ -292,13 +286,13 @@ export default class LoginOptions extends PureComponent {
                 </Text>
                 <FormattedText
                     style={GlobalStyles.subheader}
-                    id='web.root.signup_info'
-                    defaultMessage='All team communication in one place, searchable and accessible anywhere'
+                    id='custom_description_text'
+                    defaultMessage={this.props.config.CustomDescriptionText}
                 />
                 <FormattedText
                     style={[GlobalStyles.subheader, {fontWeight: 'bold', marginTop: 10}]}
-                    id='mobile.login_options.choose_title'
-                    defaultMessage='Choose your login method'
+                    id='login_message'
+                    defaultMessage='This workspace requires you to Sign in with your Gsuite Email.'
                 />
                 {this.renderGoogleOption()}
                 {this.renderEmailOption()}
