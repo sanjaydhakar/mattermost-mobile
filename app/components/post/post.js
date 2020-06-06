@@ -68,6 +68,7 @@ export default class Post extends PureComponent {
         isLandscape: PropTypes.bool.isRequired,
         previousPostExists: PropTypes.bool,
         beforePrevPostUserId: PropTypes.string,
+        lastReplyCreatedAt: PropTypes.number,
     };
 
     static defaultProps = {
@@ -351,6 +352,7 @@ export default class Post extends PureComponent {
                                     renderReplies={renderReplies}
                                     commentedOnPost={commentedOnPost}
                                     shouldRenderReplyButton={shouldRenderReplyButton}
+                                    lastReplyCreatedAt={this.props.lastReplyCreatedAt}
                                 />
                             </View>
                         </View>

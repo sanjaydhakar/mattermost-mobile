@@ -28,6 +28,8 @@ import {changeOpacity, makeStyleSheetFromTheme} from 'app/utils/theme';
 import {showModalOverCurrentContext} from 'app/actions/navigation';
 
 import ReplyIcon from 'app/components/reply_icon';
+import FormattedDate from 'app/components/formatted_date';
+import FormattedTime from 'app/components/formatted_time';
 
 import telemetry from 'app/telemetry';
 
@@ -78,6 +80,9 @@ export default class PostBody extends PureComponent {
         commentedOnDisplayName: PropTypes.string,
         renderReplies: PropTypes.bool,
         shouldRenderReplyButton: PropTypes.bool,
+        lastReplyCreatedAt: PropTypes.number,
+        userTimezone: PropTypes.string,
+        militaryTime: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -337,6 +342,9 @@ export default class PostBody extends PureComponent {
             renderReplies,
             shouldRenderReplyButton,
             theme,
+            lastReplyCreatedAt,
+            userTimezone,
+            militaryTime,
         } = this.props;
 
         const style = getStyleSheet(theme);
@@ -361,6 +369,18 @@ export default class PostBody extends PureComponent {
                     {!isSearchResult &&
                     <Text style={style.replyText}>{`${commentCount} ${(commentCount > 1) ? 'replies' : 'reply'}`}</Text>
                     }
+                    <FormattedDate
+                        format={`ddd, MMM DD, YYYY ${militaryTime ? 'HH:mm' : 'hh:mm A'}`}
+                        timeZone={userTimezone}
+                        value={lastReplyCreatedAt}
+                        style={style.time}
+                    />
+                    <FormattedTime
+                        timeZone={userTimezone}
+                        hour12={!militaryTime}
+                        value={lastReplyCreatedAt}
+                        style={style.time}
+                    />
                 </TouchableWithFeedback>
             </View>
         );
@@ -562,6 +582,13 @@ const getStyleSheet = makeStyleSheetFromTheme((theme) => {
             marginLeft: 2,
             marginTop: 2,
             color: theme.linkColor,
+        },
+        time: {
+            color: theme.centerChannelColor,
+            fontSize: 12,
+            marginTop: 5,
+            opacity: 0.5,
+            flex: 1,
         },
     };
 });
