@@ -7,6 +7,7 @@ import {
     Keyboard,
     ScrollView,
     View,
+    Text,
 } from 'react-native';
 import {intlShape} from 'react-intl';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -25,6 +26,8 @@ import {getMarkdownTextStyles, getMarkdownBlockStyles} from 'app/utils/markdown'
 import {preventDoubleTap} from 'app/utils/tap';
 import {changeOpacity, makeStyleSheetFromTheme} from 'app/utils/theme';
 import {showModalOverCurrentContext} from 'app/actions/navigation';
+
+import ReplyIcon from 'app/components/reply_icon';
 
 import telemetry from 'app/telemetry';
 
@@ -71,6 +74,10 @@ export default class PostBody extends PureComponent {
         shouldRenderJumboEmoji: PropTypes.bool.isRequired,
         theme: PropTypes.object,
         location: PropTypes.string,
+        commentCount: PropTypes.number,
+        commentedOnDisplayName: PropTypes.string,
+        renderReplies: PropTypes.bool,
+        shouldRenderReplyButton: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -80,6 +87,7 @@ export default class PostBody extends PureComponent {
         replyBarStyle: [],
         message: '',
         postProps: {},
+        commentCount: 0,
     };
 
     static contextTypes = {
@@ -305,7 +313,6 @@ export default class PostBody extends PureComponent {
             post,
             showLongPost,
         } = this.props;
-
         if (!hasReactions || isSearchResult || showLongPost) {
             return null;
         }
@@ -318,6 +325,44 @@ export default class PostBody extends PureComponent {
             <Reactions
                 postId={post.id}
             />
+        );
+    };
+
+    renderReply = () => {
+        const {
+            commentCount,
+            commentedOnDisplayName,
+            isSearchResult,
+            onPress,
+            renderReplies,
+            shouldRenderReplyButton,
+            theme,
+        } = this.props;
+
+        const style = getStyleSheet(theme);
+        const showReply = shouldRenderReplyButton || (!commentedOnDisplayName && commentCount > 0 && renderReplies);
+
+        if (!showReply) {
+            return null;
+        }
+
+        return (
+            <View style={style.replyWrapper}>
+                <TouchableWithFeedback
+                    onPress={onPress}
+                    style={style.replyIconContainer}
+                    type={'opacity'}
+                >
+                    <ReplyIcon
+                        height={16}
+                        width={16}
+                        color={theme.linkColor}
+                    />
+                    {!isSearchResult &&
+                    <Text style={style.replyText}>{`${commentCount} ${(commentCount > 1) ? 'replies' : 'reply'}`}</Text>
+                    }
+                </TouchableWithFeedback>
+            </View>
         );
     };
 
@@ -441,6 +486,7 @@ export default class PostBody extends PureComponent {
                     {this.renderPostAdditionalContent(blockStyles, messageStyle, textStyles)}
                     {this.renderFileAttachments()}
                     {this.renderReactions()}
+                    {this.renderReply()}
                 </View>
             );
         }
@@ -498,6 +544,24 @@ const getStyleSheet = makeStyleSheetFromTheme((theme) => {
         },
         systemMessage: {
             opacity: 0.6,
+        },
+        replyWrapper: {
+            flex: 1,
+            justifyContent: 'flex-start',
+        },
+        replyIconContainer: {
+            flexDirection: 'row',
+            alignItems: 'flex-start',
+            minWidth: 40,
+            paddingTop: 2,
+            paddingBottom: 10,
+            flex: 1,
+        },
+        replyText: {
+            fontSize: 12,
+            marginLeft: 2,
+            marginTop: 2,
+            color: theme.linkColor,
         },
     };
 });

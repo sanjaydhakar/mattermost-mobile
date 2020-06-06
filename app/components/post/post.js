@@ -348,6 +348,9 @@ export default class Post extends PureComponent {
                                     showAddReaction={showAddReaction}
                                     showLongPost={showLongPost}
                                     location={location}
+                                    renderReplies={renderReplies}
+                                    commentedOnPost={commentedOnPost}
+                                    shouldRenderReplyButton={shouldRenderReplyButton}
                                 />
                             </View>
                         </View>

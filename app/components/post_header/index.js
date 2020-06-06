@@ -41,7 +41,6 @@ function makeMapStateToProps() {
                 commentedOnDisplayName = displayUsername(commentedOnUser, teammateNameDisplay);
             }
         }
-
         return {
             commentedOnDisplayName,
             commentCount: getCommentCountForPost(state, {post}),
