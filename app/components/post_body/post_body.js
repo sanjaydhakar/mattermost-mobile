@@ -28,7 +28,7 @@ import {changeOpacity, makeStyleSheetFromTheme} from 'app/utils/theme';
 import {showModalOverCurrentContext} from 'app/actions/navigation';
 
 import ReplyIcon from 'app/components/reply_icon';
-import FormattedDate from 'app/components/formatted_date';
+import RecentDate from 'app/components/recent_date';
 import FormattedTime from 'app/components/formatted_time';
 
 import telemetry from 'app/telemetry';
@@ -369,18 +369,19 @@ export default class PostBody extends PureComponent {
                     {!isSearchResult &&
                     <Text style={style.replyText}>{`${commentCount} ${(commentCount > 1) ? 'replies' : 'reply'}`}</Text>
                     }
-                    <FormattedDate
-                        format={`ddd, MMM DD, YYYY ${militaryTime ? 'HH:mm' : 'hh:mm A'}`}
+                    <Text style={style.lastReplyAt}>{'Last Reply At: '}</Text>
+                    <RecentDate
+                        style={style.lastReplyDate}
                         timeZone={userTimezone}
                         value={lastReplyCreatedAt}
-                        style={style.time}
                     />
                     <FormattedTime
                         timeZone={userTimezone}
                         hour12={!militaryTime}
                         value={lastReplyCreatedAt}
-                        style={style.time}
+                        style={style.lastReplyTime}
                     />
+
                 </TouchableWithFeedback>
             </View>
         );
@@ -570,12 +571,12 @@ const getStyleSheet = makeStyleSheetFromTheme((theme) => {
             justifyContent: 'flex-start',
         },
         replyIconContainer: {
-            flexDirection: 'row',
-            alignItems: 'flex-start',
             minWidth: 40,
             paddingTop: 2,
             paddingBottom: 10,
-            flex: 1,
+            flex: 2,
+            flexDirection: 'row',
+            justifyContent: 'flex-start',
         },
         replyText: {
             fontSize: 12,
@@ -583,12 +584,25 @@ const getStyleSheet = makeStyleSheetFromTheme((theme) => {
             marginTop: 2,
             color: theme.linkColor,
         },
-        time: {
+        lastReplyAt: {
             color: theme.centerChannelColor,
-            fontSize: 12,
-            marginTop: 5,
+            fontSize: 11,
+            marginTop: 2.8,
             opacity: 0.5,
-            flex: 1,
+            marginLeft: 4,
+        },
+        lastReplyDate: {
+            color: theme.centerChannelColor,
+            fontSize: 11,
+            marginTop: 2.8,
+            opacity: 0.5,
+        },
+        lastReplyTime: {
+            color: theme.centerChannelColor,
+            fontSize: 11,
+            marginTop: 2.8,
+            opacity: 0.5,
+            marginLeft: 3,
         },
     };
 });
