@@ -337,7 +337,6 @@ export default class PostBody extends PureComponent {
         const {
             commentCount,
             commentedOnDisplayName,
-            isSearchResult,
             onPress,
             renderReplies,
             shouldRenderReplyButton,
@@ -366,9 +365,8 @@ export default class PostBody extends PureComponent {
                         width={16}
                         color={theme.linkColor}
                     />
-                    {!isSearchResult &&
                     <Text style={style.replyText}>{`${commentCount} ${(commentCount > 1) ? 'replies' : 'reply'}`}</Text>
-                    }
+
                     <Text style={style.lastReplyAt}>{'Last Reply At: '}</Text>
                     <RecentDate
                         style={style.lastReplyDate}
@@ -507,7 +505,7 @@ export default class PostBody extends PureComponent {
                     {this.renderPostAdditionalContent(blockStyles, messageStyle, textStyles)}
                     {this.renderFileAttachments()}
                     {this.renderReactions()}
-                    {this.renderReply()}
+                    {!isSearchResult && this.renderReply()}
                 </View>
             );
         }
