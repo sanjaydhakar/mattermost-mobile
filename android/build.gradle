@@ -2,6 +2,7 @@
 
 buildscript {
     ext {
+        firebaseVersion = "20.1.5"
         buildToolsVersion = "28.0.3"
         minSdkVersion = 24
         compileSdkVersion = 28
