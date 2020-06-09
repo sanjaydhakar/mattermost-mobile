@@ -7,6 +7,7 @@ import {
     Keyboard,
     ScrollView,
     View,
+    Text,
 } from 'react-native';
 import {intlShape} from 'react-intl';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -25,6 +26,10 @@ import {getMarkdownTextStyles, getMarkdownBlockStyles} from 'app/utils/markdown'
 import {preventDoubleTap} from 'app/utils/tap';
 import {changeOpacity, makeStyleSheetFromTheme} from 'app/utils/theme';
 import {showModalOverCurrentContext} from 'app/actions/navigation';
+
+import ReplyIcon from 'app/components/reply_icon';
+import RecentDate from 'app/components/recent_date';
+import FormattedTime from 'app/components/formatted_time';
 
 import telemetry from 'app/telemetry';
 
@@ -71,6 +76,13 @@ export default class PostBody extends PureComponent {
         shouldRenderJumboEmoji: PropTypes.bool.isRequired,
         theme: PropTypes.object,
         location: PropTypes.string,
+        commentCount: PropTypes.number,
+        commentedOnDisplayName: PropTypes.string,
+        renderReplies: PropTypes.bool,
+        shouldRenderReplyButton: PropTypes.bool,
+        lastReplyCreatedAt: PropTypes.number,
+        userTimezone: PropTypes.string,
+        militaryTime: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -80,6 +92,7 @@ export default class PostBody extends PureComponent {
         replyBarStyle: [],
         message: '',
         postProps: {},
+        commentCount: 0,
     };
 
     static contextTypes = {
@@ -305,7 +318,6 @@ export default class PostBody extends PureComponent {
             post,
             showLongPost,
         } = this.props;
-
         if (!hasReactions || isSearchResult || showLongPost) {
             return null;
         }
@@ -318,6 +330,58 @@ export default class PostBody extends PureComponent {
             <Reactions
                 postId={post.id}
             />
+        );
+    };
+
+    renderReply = () => {
+        const {
+            commentCount,
+            commentedOnDisplayName,
+            onPress,
+            renderReplies,
+            shouldRenderReplyButton,
+            theme,
+            lastReplyCreatedAt,
+            userTimezone,
+            militaryTime,
+        } = this.props;
+
+        const style = getStyleSheet(theme);
+        const showReply = shouldRenderReplyButton || (!commentedOnDisplayName && commentCount > 0 && renderReplies);
+
+        if (!showReply) {
+            return null;
+        }
+
+        return (
+            <View style={style.replyWrapper}>
+                <TouchableWithFeedback
+                    onPress={onPress}
+                    style={style.replyIconContainer}
+                    type={'opacity'}
+                >
+                    <ReplyIcon
+                        height={16}
+                        width={16}
+                        color={theme.linkColor}
+                    />
+                    <Text style={style.replyText}>{`${commentCount} ${(commentCount > 1) ? 'replies' : 'reply'}`}</Text>
+
+                    <Text style={style.lastReplyAt}>{'Last Reply At: '}</Text>
+                    <RecentDate
+                        style={style.lastReplyDate}
+                        timeZone={userTimezone}
+                        value={lastReplyCreatedAt}
+                    />
+                    <FormattedTime
+                        timeZone={userTimezone}
+                        hour12={!militaryTime}
+                        value={lastReplyCreatedAt}
+                        style={style.lastReplyTime}
+                    />
+
+                </TouchableWithFeedback>
+            </View>
         );
     };
 
@@ -441,6 +505,7 @@ export default class PostBody extends PureComponent {
                     {this.renderPostAdditionalContent(blockStyles, messageStyle, textStyles)}
                     {this.renderFileAttachments()}
                     {this.renderReactions()}
+                    {!isSearchResult && this.renderReply()}
                 </View>
             );
         }
@@ -498,6 +563,44 @@ const getStyleSheet = makeStyleSheetFromTheme((theme) => {
         },
         systemMessage: {
             opacity: 0.6,
+        },
+        replyWrapper: {
+            flex: 1,
+            justifyContent: 'flex-start',
+        },
+        replyIconContainer: {
+            minWidth: 40,
+            paddingTop: 2,
+            paddingBottom: 10,
+            flex: 2,
+            flexDirection: 'row',
+            justifyContent: 'flex-start',
+        },
+        replyText: {
+            fontSize: 12,
+            marginLeft: 2,
+            marginTop: 2,
+            color: theme.linkColor,
+        },
+        lastReplyAt: {
+            color: theme.centerChannelColor,
+            fontSize: 11,
+            marginTop: 2.8,
+            opacity: 0.5,
+            marginLeft: 4,
+        },
+        lastReplyDate: {
+            color: theme.centerChannelColor,
+            fontSize: 11,
+            marginTop: 2.8,
+            opacity: 0.5,
+        },
+        lastReplyTime: {
+            color: theme.centerChannelColor,
+            fontSize: 11,
+            marginTop: 2.8,
+            opacity: 0.5,
+            marginLeft: 3,
         },
     };
 });
