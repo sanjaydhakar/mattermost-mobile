@@ -3,23 +3,26 @@
 
 import {connect} from 'react-redux';
 
-import {General, Posts} from '@mm-redux/constants';
+import {General, Posts, Preferences} from '@mm-redux/constants';
 import {getChannel, canManageChannelMembers, getCurrentChannelId} from '@mm-redux/selectors/entities/channels';
-import {getTheme} from '@mm-redux/selectors/entities/preferences';
+import {getTheme, getTeammateNameDisplaySetting, getBool} from '@mm-redux/selectors/entities/preferences';
 import {getConfig, getLicense} from '@mm-redux/selectors/entities/general';
-import {getCurrentUserId, getCurrentUserRoles, getUser} from '@mm-redux/selectors/entities/users';
+import {getCurrentUserId, getCurrentUserRoles, getUser, getCurrentUser} from '@mm-redux/selectors/entities/users';
 import {getCurrentTeamId} from '@mm-redux/selectors/entities/teams';
 import {getCustomEmojisByName} from '@mm-redux/selectors/entities/emojis';
-import {makeGetReactionsForPost} from '@mm-redux/selectors/entities/posts';
+import {makeGetReactionsForPost, makeGetCommentCountForPost} from '@mm-redux/selectors/entities/posts';
 import {memoizeResult} from '@mm-redux/utils/helpers';
+import {isTimezoneEnabled} from '@mm-redux/selectors/entities/timezone';
+import {getUserCurrentTimezone} from '@mm-redux/utils/timezone_utils';
 
 import {
     isEdited,
     isPostEphemeral,
     isSystemMessage,
     canDeletePost,
+    isFromWebhook,
 } from '@mm-redux/utils/post_utils';
-import {isAdmin as checkIsAdmin, isSystemAdmin as checkIsSystemAdmin} from '@mm-redux/utils/user_utils';
+import {isAdmin as checkIsAdmin, isSystemAdmin as checkIsSystemAdmin, displayUsername} from '@mm-redux/utils/user_utils';
 
 import {getDimensions} from 'app/selectors/device';
 
@@ -32,6 +35,7 @@ const POST_TIMEOUT = 20000;
 export function makeMapStateToProps() {
     const memoizeHasEmojisOnly = memoizeResult((message, customEmojis) => hasEmojisOnly(message, customEmojis));
     const getReactionsForPost = makeGetReactionsForPost();
+    const getCommentCountForPost = makeGetCommentCountForPost();
 
     return (state, ownProps) => {
         const post = ownProps.post;
@@ -49,6 +53,17 @@ export function makeMapStateToProps() {
 
         const isUserCanManageMembers = canManageChannelMembers(state);
         const isEphemeralPost = isPostEphemeral(post);
+
+        const commentedOnPost = ownProps.commentedOnPost;
+        const commentedOnUserId = commentedOnPost?.user_id; // eslint-disable-line camelcase
+        const commentedOnUser = commentedOnUserId ? getUser(state, commentedOnUserId) : null;
+        const teammateNameDisplay = getTeammateNameDisplaySetting(state);
+        const user = getUser(state, post.user_id) || {};
+
+        const currentUser = getCurrentUser(state);
+        const militaryTime = getBool(state, Preferences.CATEGORY_DISPLAY_SETTINGS, 'use_military_time');
+        const enableTimezone = isTimezoneEnabled(state);
+        const userTimezone = enableTimezone ? getUserCurrentTimezone(currentUser.timezone) : '';
 
         const config = getConfig(state);
         const license = getLicense(state);
@@ -86,6 +101,15 @@ export function makeMapStateToProps() {
             postProps.username = owner?.username || '';
         }
 
+        let commentedOnDisplayName = '';
+        if (commentedOnUserId) {
+            if (isFromWebhook(commentedOnPost) && commentedOnPost.props.override_username) {
+                commentedOnDisplayName = commentedOnPost.props.override_username;
+            } else {
+                commentedOnDisplayName = displayUsername(commentedOnUser, teammateNameDisplay);
+            }
+        }
+
         return {
             metadata: post.metadata,
             postProps,
@@ -104,6 +128,12 @@ export function makeMapStateToProps() {
             shouldRenderJumboEmoji,
             theme: getTheme(state),
             canDelete,
+            commentedOnDisplayName,
+            commentCount: getCommentCountForPost(state, {post}),
+            fromWebHook: isFromWebhook(post),
+            displayName: displayUsername(user, teammateNameDisplay),
+            militaryTime,
+            userTimezone,
             ...getDimensions(state),
         };
     };

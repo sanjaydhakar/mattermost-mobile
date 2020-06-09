@@ -319,7 +319,6 @@ export default class PostHeader extends PureComponent {
                         {this.renderDisplayName()}
                         {this.renderTag()}
                         {dateComponent}
-                        {this.renderReply()}
                     </View>
                 </View>
                 {this.renderCommentedOnMessage(style)}
