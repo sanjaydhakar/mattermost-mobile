@@ -7,7 +7,7 @@ import {bindActionCreators} from 'redux';
 import {createPost, removePost} from '@mm-redux/actions/posts';
 import {Posts} from '@mm-redux/constants';
 import {isChannelReadOnlyById} from '@mm-redux/selectors/entities/channels';
-import {getPost, makeGetCommentCountForPost, makeIsPostCommentMention} from '@mm-redux/selectors/entities/posts';
+import {getPost, makeGetCommentCountForPost, makeIsPostCommentMention, makeGetPostIdsForThread} from '@mm-redux/selectors/entities/posts';
 import {getUser, getCurrentUserId} from '@mm-redux/selectors/entities/users';
 import {getMyPreferences, getTheme} from '@mm-redux/selectors/entities/preferences';
 import {isDateLine, isStartOfNewMessages} from '@mm-redux/utils/post_list';
@@ -53,6 +53,8 @@ function makeMapStateToProps() {
         let isLastReply = true;
         let commentedOnPost = null;
 
+        const getPostIdsForThread = makeGetPostIdsForThread();
+
         if (ownProps.renderReplies && post && post.root_id) {
             if (previousPostId) {
                 if (previousPost && (previousPost.id === post.root_id || previousPost.root_id === post.root_id)) {
@@ -73,6 +75,14 @@ function makeMapStateToProps() {
             }
         }
 
+        let lastReplyCreatedAt;
+        if (getCommentCountForPost(state, {post}) > 0) {
+            const postIdArray = getPostIdsForThread(state, ownProps.postId);
+            if (postIdArray.length > 1) {
+                const lastReplyPost = getPost(state, postIdArray[0]);
+                lastReplyCreatedAt = lastReplyPost.create_at;
+            }
+        }
         return {
             channelIsReadOnly: isChannelReadOnlyById(state, post.channel_id),
             currentUserId,
@@ -89,6 +99,7 @@ function makeMapStateToProps() {
             isLandscape: isLandscape(state),
             previousPostExists: Boolean(previousPost),
             beforePrevPostUserId: (beforePrevPost ? beforePrevPost.user_id : null),
+            lastReplyCreatedAt,
         };
     };
 }
