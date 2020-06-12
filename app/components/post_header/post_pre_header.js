@@ -75,7 +75,7 @@ export default class PostPreHeader extends PureComponent {
                     }
                     {isFlagged && !skipFlaggedHeader &&
                     <Image
-                        id='starIcon'
+                        id='flagIcon'
                         source={starIcon}
                         style={style.icon}
                     />
