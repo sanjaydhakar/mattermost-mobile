@@ -221,7 +221,7 @@ export default class SettingsSidebarBase extends PureComponent {
                         <DrawerItem
                             defaultMessage='Flagged Posts'
                             i18nId='search_header.title3'
-                            iconName='ios-flag'
+                            iconName='ios-star'
                             iconType='ion'
                             onPress={this.goToFlagged}
                             separator={false}

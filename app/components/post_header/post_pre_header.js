@@ -5,7 +5,8 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {Image, View} from 'react-native';
 
-import flagIcon from '@assets/images/post_header/flag.png';
+//import flagIcon from '@assets/images/post_header/flag.png';
+import starIcon from '@assets/images/post_header/star.png';
 import pinIcon from '@assets/images/post_header/pin.png';
 import FormattedText from '@components/formatted_text';
 import {t} from '@utils/i18n';
@@ -76,7 +77,7 @@ export default class PostPreHeader extends PureComponent {
                     {isFlagged && !skipFlaggedHeader &&
                     <Image
                         id='flagIcon'
-                        source={flagIcon}
+                        source={starIcon}
                         style={style.icon}
                     />
                     }
