@@ -7,7 +7,7 @@ import {General} from 'mattermost-redux/constants';
 import {StorageTypes} from 'utils/constants';
 
 function storage(state = {}, action) {
-    var key;
+    let key;
 
     switch (action.type) {
     case StorageTypes.SET_ITEM: {
@@ -73,11 +73,11 @@ function storage(state = {}, action) {
     }
     case StorageTypes.ACTION_ON_ITEMS_WITH_PREFIX: {
         const nextState = {...state};
-        var globalPrefix = action.data.globalPrefix;
-        var globalPrefixLen = action.data.globalPrefix.length;
+        let globalPrefix = action.data.globalPrefix;
+        let globalPrefixLen = action.data.globalPrefix.length;
         for (key in state) {
             if (key.lastIndexOf(globalPrefix + action.data.prefix, 0) === 0) {
-                var userkey = key.substring(globalPrefixLen);
+                let userkey = key.substring(globalPrefixLen);
                 nextState[key] = {
                     timestamp: new Date(),
                     value: action.data.action(userkey, state[key].value),

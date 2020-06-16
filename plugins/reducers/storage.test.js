@@ -55,7 +55,7 @@ describe('Reducers.Storage', () => {
     });
 
     it('Storage.REMOVE_ITEM', async () => {
-        var nextState = storageReducer(
+        let nextState = storageReducer(
             {
                 storage: {
                     user_id_key: 'value',
@@ -92,7 +92,7 @@ describe('Reducers.Storage', () => {
     });
 
     it('Storage.REMOVE_GLOBAL_ITEM', async () => {
-        var nextState = storageReducer(
+        let nextState = storageReducer(
             {
                 storage: {
                     key: 'value',
@@ -150,7 +150,7 @@ describe('Reducers.Storage', () => {
     });
 
     it('Storage.ACTION_ON_ITEMS_WITH_PREFIX', async () => {
-        var touchedPairs = [];
+        let touchedPairs = [];
         storageReducer(
             {
                 storage: {
@@ -175,7 +175,7 @@ describe('Reducers.Storage', () => {
     });
 
     it('Storage.ACTION_ON_GLOBAL_ITEMS_WITH_PREFIX', async () => {
-        var touchedPairs = [];
+       let touchedPairs = [];
         storageReducer(
             {
                 storage: {
@@ -199,7 +199,7 @@ describe('Reducers.Storage', () => {
     });
 
     it('Storage.STORAGE_REHYDRATE', async () => {
-        var nextState = storageReducer(
+        let nextState = storageReducer(
             {
                 storage: {},
             },
