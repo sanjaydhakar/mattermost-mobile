@@ -367,7 +367,7 @@ export default class PostBody extends PureComponent {
                     />
                     <Text style={style.replyText}>{`${commentCount} ${(commentCount > 1) ? 'replies' : 'reply'}`}</Text>
 
-                    <Text style={style.lastReplyAt}>{'Last Reply At: '}</Text>
+                    <Text style={style.lastReplyAt}>{'Last reply at: '}</Text>
                     <RecentDate
                         style={style.lastReplyDate}
                         timeZone={userTimezone}
